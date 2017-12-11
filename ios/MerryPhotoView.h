@@ -8,7 +8,7 @@
 #import <React/RCTInvalidating.h>
 
 
-#import <NYTPhotoViewer/NYTPhotoViewerArrayDataSource.h>
+#import <NYTPhotoViewer/NYTPhotosDataSource.h>
 #import <NYTPhotoViewer/NYTPhotosViewController.h>
 
 #import "MerryCommonHeader.h"
@@ -39,6 +39,6 @@
 @property (nonatomic) NSMutableArray* photos;
 @property (nonatomic) NSMutableArray* reactPhotos;
 
-@property (nonatomic) NYTPhotoViewerArrayDataSource* dataSource;
+@property (nonatomic) NYTPhotosDataSource* dataSource;
 @property (nonatomic) NYTPhotosViewController* nytPhotosViewController;
 @end

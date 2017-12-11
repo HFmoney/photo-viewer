@@ -112,13 +112,13 @@
     self.photos = msPhotos;
     self.reactPhotos = rsPhotos;
 
-    self.dataSource = [NYTPhotoViewerArrayDataSource dataSourceWithPhotos:self.photos];
+    self.dataSource = [[NYTPhotosDataSource alloc] initWithPhotos:self.photos];
     NSInteger initialPhoto = self.initial;
 
     dispatch_async(dispatch_get_main_queue(), ^{
 
         NYTPhotosViewController* photosViewController = [[NYTPhotosViewController alloc]
-            initWithDataSource:self.dataSource
+            initWithPhotos:self.photos
                   initialPhoto:[self.photos objectAtIndex:initialPhoto]
                       delegate:self];
         // hide left bar button
@@ -153,7 +153,7 @@
                      Index:(NSUInteger)photoIndex
 {
     NSInteger current = (unsigned long)photoIndex;
-    MerryPhoto* currentPhoto = [self.dataSource.photos objectAtIndex:current];
+    MerryPhoto* currentPhoto = [self.dataSource photoAtIndex:current];
     MerryPhotoData* d = self.reactPhotos[current];
 
     [_bridge.imageLoader loadImageWithURLRequest:d.source.request
@@ -171,7 +171,7 @@
 
                     currentPhoto.image = image;
 
-                    [photosViewController updatePhoto:currentPhoto];
+                    [photosViewController updateImageForPhoto:currentPhoto];
 
                 });
             }
@@ -198,13 +198,13 @@
  @param totalPhotoCount <#totalPhotoCount description#>
  @return <#return value description#>
  */
-- (NSString*)photosViewController:(NYTPhotosViewController*)photosViewController
-                    titleForPhoto:(id<NYTPhoto>)photo
-                          atIndex:(NSInteger)photoIndex
-                  totalPhotoCount:(nullable NSNumber*)totalPhotoCount
+- (NSString * _Nullable)photosViewController:(NYTPhotosViewController *)photosViewController
+                               titleForPhoto:(id <NYTPhoto>)photo
+                                     atIndex:(NSUInteger)photoIndex
+                             totalPhotoCount:(NSUInteger)totalPhotoCount
 {
-    return [NSString stringWithFormat:@"%lu / %lu", (unsigned long)photoIndex + 1,
-                     (unsigned long)totalPhotoCount.integerValue];
+    return [NSString stringWithFormat:@"%lu / %lu", photoIndex + 1,
+                     totalPhotoCount];
 }
 
 /**
